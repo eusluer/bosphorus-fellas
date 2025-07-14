@@ -1288,8 +1288,7 @@ html[data-theme="dark"] body {
         top: 100%;
         left: 0;
         right: 0;
-        background: var(--card-bg);
-        backdrop-filter: blur(20px);
+        background: var(--bg-primary);
         border: 1px solid var(--border-color);
         border-top: none;
         border-radius: 0 0 15px 15px;
