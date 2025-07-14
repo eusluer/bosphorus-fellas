@@ -137,18 +137,19 @@
                     <div class="section-header">
                         <h2><i class="fas fa-calendar"></i> Etkinlikler</h2>
                         <div class="filter-controls">
-                            <select id="eventStatusFilter">
+                            <select id="eventStatusFilter" onchange="filterEvents()">
                                 <option value="all">Tümü</option>
-                                <option value="ongoing">Devam Eden</option>
-                                <option value="completed">Biten</option>
+                                <option value="upcoming">Yaklaşan</option>
+                                <option value="past">Geçmiş</option>
                             </select>
-                            <button class="btn btn-primary" onclick="loadEvents()">
+                            <button class="btn btn-primary" onclick="refreshEvents()">
                                 <i class="fas fa-sync"></i> Yenile
                             </button>
                         </div>
                     </div>
-
-                    <div class="events-grid" id="eventsGrid"></div>
+                    <div id="eventsContainer" style="margin-top: 20px;">
+                        <!-- Etkinlikler buraya gelecek -->
+                    </div>
                 </div>
 
                 <!-- Content Section -->
@@ -647,39 +648,195 @@
             loadSectionData(sectionId);
         }
 
-        async function loadEvents() {
+        // ==========================================
+        // ETKİNLİKLER YÖNETİMİ - YENİ VE TEMİZ KOD
+        // ==========================================
+        
+        let allEvents = []; // Tüm etkinlikleri sakla
+        
+        // Etkinlikleri API'den çek ve göster
+        async function refreshEvents() {
+            console.log('Etkinlikler yenileniyor...');
+            const container = document.getElementById('eventsContainer');
+            
             try {
+                // Loading göster
+                container.innerHTML = '<div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#667eea;"></i><p>Etkinlikler yükleniyor...</p></div>';
+                
+                // API'den etkinlikleri al
                 const result = await window.apiService.getEvents();
-                const eventsContainer = document.getElementById('eventsGrid');
-                if (!eventsContainer) return;
-                if (result.success) {
-                    // Filtre uygula
-                    const filter = document.getElementById('eventStatusFilter')?.value || 'all';
-                    let filteredEvents = result.data;
-                    const now = new Date();
-                    if (filter === 'ongoing') {
-                        filteredEvents = result.data.filter(event => {
-                            const eventDate = new Date(event.zaman || event.event_date);
-                            return eventDate >= now && event.status === true;
-                        });
-                    } else if (filter === 'completed') {
-                        filteredEvents = result.data.filter(event => {
-                            const eventDate = new Date(event.zaman || event.event_date);
-                            return eventDate < now;
-                        });
-                    }
-                    displayEvents(filteredEvents);
+                console.log('API Sonucu:', result);
+                
+                if (result.success && Array.isArray(result.data)) {
+                    allEvents = result.data;
+                    console.log('Toplam etkinlik sayısı:', allEvents.length);
+                    renderEvents(allEvents);
                 } else {
-                    eventsContainer.innerHTML = '<p class="no-data">Etkinlik bulunamadı</p>';
+                    container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;"><i class="fas fa-calendar-times" style="font-size:3rem;margin-bottom:10px;"></i><p>Etkinlik bulunamadı</p></div>';
                 }
             } catch (error) {
-                console.error('Load events error:', error);
-                const eventsContainer = document.getElementById('eventsGrid');
-                if (eventsContainer) {
-                    eventsContainer.innerHTML = '<p class="error">Etkinlikler yüklenirken hata oluştu</p>';
-                }
+                console.error('Etkinlik yükleme hatası:', error);
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#dc3545;"><i class="fas fa-exclamation-circle" style="font-size:3rem;margin-bottom:10px;"></i><p>Etkinlikler yüklenirken hata oluştu</p></div>';
             }
         }
+        
+        // Etkinlikleri filtrele
+        function filterEvents() {
+            const filter = document.getElementById('eventStatusFilter').value;
+            console.log('Filtre uygulanıyor:', filter);
+            
+            const now = new Date();
+            let filteredEvents = [];
+            
+            switch(filter) {
+                case 'upcoming':
+                    filteredEvents = allEvents.filter(event => {
+                        const eventDate = new Date(event.zaman || event.date || event.event_date);
+                        return eventDate >= now;
+                    });
+                    break;
+                case 'past':
+                    filteredEvents = allEvents.filter(event => {
+                        const eventDate = new Date(event.zaman || event.date || event.event_date);
+                        return eventDate < now;
+                    });
+                    break;
+                default:
+                    filteredEvents = allEvents;
+            }
+            
+            console.log('Filtrelenmiş etkinlik sayısı:', filteredEvents.length);
+            renderEvents(filteredEvents);
+        }
+        
+        // Etkinlikleri ekrana bas
+        function renderEvents(events) {
+            console.log('Etkinlikler render ediliyor:', events.length);
+            const container = document.getElementById('eventsContainer');
+            
+            if (!events || events.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;"><i class="fas fa-calendar-times" style="font-size:3rem;margin-bottom:10px;"></i><p>Gösterilecek etkinlik bulunmuyor</p></div>';
+                return;
+            }
+            
+            // Grid container oluştur
+            const gridHtml = `
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px;">
+                    ${events.map(event => createEventCard(event)).join('')}
+                </div>
+            `;
+            
+            container.innerHTML = gridHtml;
+            console.log('Etkinlikler başarıyla render edildi');
+        }
+        
+        // Tek bir etkinlik kartı oluştur
+        function createEventCard(event) {
+            // Property fallback
+            const title = event.baslik || event.title || 'Başlıksız Etkinlik';
+            const date = event.zaman || event.date || event.event_date || '';
+            const location = event.adres || event.location || event.address || 'Belirtilmemiş';
+            const description = event.aciklama || event.description || '';
+            const isJoined = event.katilimDurumu === true;
+            const eventId = event.id;
+            const image = event.fotograf || event.image || event.photo || '';
+            
+            // Tarih formatla
+            const formattedDate = date ? new Date(date).toLocaleDateString('tr-TR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : 'Tarih belirtilmemiş';
+            
+            // Geçmiş etkinlik mi kontrol et
+            const isPast = date ? new Date(date) < new Date() : false;
+            
+            return `
+                <div style="background:var(--bg-card,#fff);border:1px solid var(--border-color,#e0e0e0);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);transition:all 0.3s ease;${isPast ? 'opacity:0.7;' : ''}" 
+                     onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" 
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)'">
+                    
+                    ${image ? `<div style="width:100%;height:180px;overflow:hidden;"><img src="${image}" alt="${title}" style="width:100%;height:100%;object-fit:cover;"></div>` : ''}
+                    
+                    <div style="padding:20px;">
+                        <div style="margin-bottom:15px;">
+                            <h3 style="margin:0 0 10px 0;color:var(--text-primary,#333);font-size:1.2rem;">${title}</h3>
+                            ${isPast ? '<span style="background:#6c757d;color:white;padding:4px 8px;border-radius:4px;font-size:0.8rem;">Geçmiş Etkinlik</span>' : ''}
+                        </div>
+                        
+                        <div style="color:var(--text-secondary,#666);font-size:0.95rem;">
+                            <p style="margin:5px 0;"><i class="fas fa-calendar" style="width:20px;color:#667eea;"></i> ${formattedDate}</p>
+                            <p style="margin:5px 0;"><i class="fas fa-map-marker-alt" style="width:20px;color:#667eea;"></i> ${location}</p>
+                            ${description ? `<p style="margin:10px 0 15px 0;font-size:0.9rem;">${description}</p>` : ''}
+                        </div>
+                        
+                        <div style="display:flex;gap:10px;margin-top:15px;">
+                            <button class="btn btn-sm ${isJoined ? 'btn-danger' : 'btn-primary'}" 
+                                    onclick="${isJoined ? `leaveEvent('${eventId}')` : `joinEvent('${eventId}')`}"
+                                    style="flex:1;">
+                                <i class="fas ${isJoined ? 'fa-calendar-minus' : 'fa-calendar-plus'}"></i> 
+                                ${isJoined ? 'Ayrıl' : 'Katıl'}
+                            </button>
+                            <button class="btn btn-sm btn-secondary" 
+                                    onclick="showEventDetails('${eventId}')"
+                                    style="${isPast ? 'flex:1;' : ''}">
+                                <i class="fas fa-info-circle"></i> Detaylar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+
+        
+        // Etkinlik detaylarını göster
+        function showEventDetails(eventId) {
+            const event = allEvents.find(e => e.id == eventId);
+            if (!event) {
+                showMessage('Etkinlik bulunamadı', 'error');
+                return;
+            }
+            
+            const title = event.baslik || event.title || 'Başlıksız Etkinlik';
+            const date = event.zaman || event.date || event.event_date || '';
+            const location = event.adres || event.location || event.address || 'Belirtilmemiş';
+            const description = event.aciklama || event.description || 'Açıklama bulunmuyor';
+            const image = event.fotograf || event.image || event.photo || '';
+            
+            const formattedDate = date ? new Date(date).toLocaleDateString('tr-TR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : 'Tarih belirtilmemiş';
+            
+            const modalContent = `
+                <div style="max-width:500px;">
+                    ${image ? `<img src="${image}" alt="${title}" style="width:100%;height:200px;object-fit:cover;border-radius:8px;margin-bottom:20px;">` : ''}
+                    <h2 style="margin:0 0 20px 0;color:var(--text-primary,#333);">${title}</h2>
+                    <div style="color:var(--text-secondary,#666);">
+                        <p><strong>Tarih:</strong> ${formattedDate}</p>
+                        <p><strong>Konum:</strong> ${location}</p>
+                        <p style="margin-top:15px;"><strong>Açıklama:</strong></p>
+                        <p style="background:var(--bg-secondary,#f8f9fa);padding:15px;border-radius:8px;margin-top:10px;">${description}</p>
+                    </div>
+                </div>
+            `;
+            
+            showModal('Etkinlik Detayları', modalContent);
+        }
+        
+        // Etkinlikler sekmesi açıldığında otomatik yükle
+        window.addEventListener('DOMContentLoaded', function() {
+            // Eğer etkinlikler sekmesi aktifse yükle
+            if (document.getElementById('events').classList.contains('active')) {
+                refreshEvents();
+            }
+        });
 
         async function loadNews() {
             try {
@@ -826,75 +983,6 @@
         }
 
         // Display functions
-        function displayEvents(events) {
-            const container = document.getElementById('eventsGrid');
-            if (!container) return;
-
-            if (events.length === 0) {
-                container.innerHTML = '<p class="no-data">Henüz etkinlik bulunmuyor</p>';
-                return;
-            }
-
-            // Etkinlikleri tarihe göre sırala (aktif olanlar önce, geçmiş olanlar sonra)
-            const sortedEvents = events.sort((a, b) => {
-                const dateA = new Date(a.zaman || a.event_date);
-                const dateB = new Date(b.zaman || b.event_date);
-                const now = new Date();
-                
-                // Aktif etkinlikler (gelecekteki) önce gelsin
-                const aIsActive = dateA > now;
-                const bIsActive = dateB > now;
-                
-                if (aIsActive && !bIsActive) return -1;
-                if (!aIsActive && bIsActive) return 1;
-                
-                // Aynı durumdaki etkinlikler tarihe göre sırala
-                return dateA - dateB;
-            });
-
-            container.innerHTML = sortedEvents.map(event => {
-                const katildiMi = event.katilimDurumu === true;
-                const imageUrl = event.fotograf || event.photo || 'img/default-event.jpg';
-                const eventDate = new Date(event.zaman || event.event_date);
-                const now = new Date();
-                const isPastEvent = eventDate < now;
-                
-                return `
-                <div class="event-card" style="${isPastEvent ? 'opacity: 0.6; filter: grayscale(0.3);' : ''}">
-                    <div class="event-image">
-                        <img src="${imageUrl}" alt="${event.baslik || event.title}" style="width:100%;height:160px;object-fit:cover;border-radius:12px 12px 0 0;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="event-icon-placeholder" style="display:none; width:100%; height:160px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius:12px 12px 0 0; justify-content:center; align-items:center; color:white; font-size:3rem;">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                    </div>
-                    <div class="event-header">
-                        <h3>${event.baslik || event.title}</h3>
-                        <span class="event-date">${formatDate(event.zaman || event.event_date)}</span>
-                    </div>
-                    <div class="event-content">
-                        <p>${event.aciklama || event.description || ''}</p>
-                        <div class="event-details">
-                            <span><i class="fas fa-map-marker-alt"></i> ${event.adres || event.location || 'Konum belirtilmemiş'}</span>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        ${isPastEvent ? `
-                            <span class="past-event-badge" style="background: #6c757d; color: white; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem;">
-                                <i class="fas fa-clock"></i> Geçmiş Etkinlik
-                            </span>
-                        ` : `
-                            <button class="btn ${katildiMi ? 'btn-danger' : 'btn-primary'}" onclick="${katildiMi ? `leaveEvent('${event.id}')` : `joinEvent('${event.id}')`}">
-                                <i class="fas ${katildiMi ? 'fa-calendar-minus' : 'fa-calendar-plus'}"></i> ${katildiMi ? 'Ayrıl' : 'Katıl'}
-                            </button>
-                        `}
-                        <button class="btn btn-secondary" onclick="viewEventDetails('${event.id}')">
-                            <i class="fas fa-eye"></i> Detaylar
-                        </button>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
 
         function displayContent(content, type) {
             const container = document.getElementById('contentGrid');
@@ -961,36 +1049,45 @@
             `).join('');
         }
 
-        // Event action functions
+        // Event action functions - Yeni sistemle uyumlu wrapper'lar
         async function joinEvent(eventId) {
             try {
+                showLoading(true);
                 const result = await window.apiService.joinEvent(eventId);
+                console.log('Join event result:', result);
                 if (result.success) {
-                    showMessage('Etkinliğe başarıyla katıldınız!', 'success');
-                    await loadEvents();
+                    showMessage('Etkinliğe katıldınız', 'success');
+                    await refreshEvents();
                     await loadMyEvents();
                 } else {
-                    showMessage(`Katılım hatası: ${result.error}`, 'error');
+                    showMessage(result.error || 'Katılım başarısız', 'error');
                 }
             } catch (error) {
                 console.error('Join event error:', error);
                 showMessage('Etkinliğe katılırken hata oluştu', 'error');
+            } finally {
+                showLoading(false);
             }
         }
 
         async function leaveEvent(eventId) {
+            if (!confirm('Bu etkinlikten ayrılmak istediğinizden emin misiniz?')) return;
+            
             try {
+                showLoading(true);
                 const result = await window.apiService.leaveEvent(eventId);
                 if (result.success) {
                     showMessage('Etkinlikten ayrıldınız', 'success');
-                    await loadEvents();
+                    await refreshEvents();
                     await loadMyEvents();
                 } else {
-                    showMessage(`Ayrılma hatası: ${result.error}`, 'error');
+                    showMessage(result.error || 'Ayrılma başarısız', 'error');
                 }
             } catch (error) {
                 console.error('Leave event error:', error);
                 showMessage('Etkinlikten ayrılırken hata oluştu', 'error');
+            } finally {
+                showLoading(false);
             }
         }
 
@@ -1154,7 +1251,7 @@
         async function loadSectionData(section) {
             switch(section) {
                 case 'events':
-                    await loadEvents();
+                    await refreshEvents();
                     break;
                 case 'news':
                     await loadNews();
@@ -1459,40 +1556,9 @@
             }, 5000);
         }
 
-        // joinEvent ve leaveEvent fonksiyonlarını global yapıldı
-        window.joinEvent = async function(eventId) {
-            try {
-                const result = await window.apiService.joinEvent(eventId);
-                if (result.success) {
-                    showMessage('Etkinliğe başarıyla katıldınız!', 'success');
-                    await loadEvents();
-                    await loadMyEvents();
-                } else {
-                    showMessage(`Katılım hatası: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                console.error('Join event error:', error);
-                showMessage('Etkinliğe katılırken hata oluştu', 'error');
-            }
-        }
-
-        window.leaveEvent = async function(eventId) {
-            if (!confirm('Bu etkinlikten ayrılmak istediğinizden emin misiniz?')) return;
-
-            try {
-                const result = await window.apiService.leaveEvent(eventId);
-                if (result.success) {
-                    showMessage('Etkinlikten başarıyla ayrıldınız', 'success');
-                    await loadEvents();
-                    await loadMyEvents();
-                } else {
-                    showMessage(`Ayrılma hatası: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                console.error('Leave event error:', error);
-                showMessage('Etkinlikten ayrılırken hata oluştu', 'error');
-            }
-        }
+        // joinEvent ve leaveEvent fonksiyonlarını global yap
+        window.joinEvent = joinEvent;
+        window.leaveEvent = leaveEvent;
         // File upload functions
         async function uploadProfilePhoto(file) {
             try {
@@ -1792,13 +1858,8 @@
         }
     </script>
 
-    <!-- Sayfa sonunda, body kapanışından hemen önce -->
-    <script src="js/api-service.js"></script>
-    <script src="js/auth-service.js"></script>
-    <script src="script.js"></script>
-    <script>
-      if (typeof initTheme === 'function') { initTheme(); } 
-      else if (window.BosphorusFellas && window.BosphorusFellas.initTheme) { window.BosphorusFellas.initTheme(); }
-    </script>
+    <!-- Sayfa sonunda tekrar edilen scriptler kaldırıldı -->
+
+
 </body>
 </html> 

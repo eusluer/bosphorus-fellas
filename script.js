@@ -531,6 +531,7 @@ async function loadLandingPageEvents() {
 
 // Etkinlikleri görüntüle
 function displayEvents(events) {
+    window.events = Array.isArray(events) ? events : [];
     const eventsContainer = document.getElementById('eventsContainer');
     if (!eventsContainer) return;
 
@@ -554,11 +555,12 @@ function displayEvents(events) {
 
 // Etkinlik kartı oluştur
 function createEventCard(event, isFeatured = false) {
-    const isAuthenticated = window.authService && window.authService.isAuthenticated();
-    
+    // Fotoğraf property fallback
+    const image = event.fotograf || event.image || event.photo || '';
     return `
         <div class="event-card ${isFeatured ? 'featured' : ''}">
             <div class="event-image">
+                ${image ? `<img src="${image}" alt="${event.baslik || 'Etkinlik'}" style="width:100%;height:180px;object-fit:cover;border-radius:8px 8px 0 0;">` : ''}
                 <div class="event-badge">${isFeatured ? 'Öne Çıkan' : 'Etkinlik'}</div>
             </div>
             <div class="event-content">
@@ -567,9 +569,9 @@ function createEventCard(event, isFeatured = false) {
                 <div class="event-meta">
                     <span><i class="fas fa-map-marker-alt"></i> ${event.adres || 'Adres belirtilmemiş'}</span>
                 </div>
-                <button class="event-btn" onclick="handleEventParticipation(${event.id})">
-                    ${isAuthenticated ? 'Katıl' : 'Üye Ol'}
-                    <i class="fas fa-arrow-right"></i>
+                <button class="event-action-btn" onclick="window.location.href='apply.html'"
+                    style="background:#4f8cff;color:#fff;font-weight:600;padding:10px 24px;border:none;border-radius:6px;cursor:pointer;margin-top:10px;">
+                    <i class="fas fa-user-plus"></i> Üye Ol
                 </button>
             </div>
         </div>
@@ -578,7 +580,26 @@ function createEventCard(event, isFeatured = false) {
 
 // Etkinlik katılım işlemi
 function handleEventParticipation(eventId) {
-    window.location.href = 'apply.html';
+    // Etkinlik objesini bul
+    const event = (window.events || []).find(e => e.id === eventId);
+    const isJoined = event && (event.katilimDurumu === true || event.participation === true);
+    if (isJoined) {
+        if (window.leaveEvent) {
+            window.leaveEvent(eventId);
+        } else if (window.apiService && window.apiService.leaveEvent) {
+            window.apiService.leaveEvent(eventId);
+        } else {
+            alert('Etkinlikten ayrılma fonksiyonu bulunamadı!');
+        }
+    } else {
+        if (window.joinEvent) {
+            window.joinEvent(eventId);
+        } else if (window.apiService && window.apiService.joinEvent) {
+            window.apiService.joinEvent(eventId);
+        } else {
+            alert('Etkinliğe katılım fonksiyonu bulunamadı!');
+        }
+    }
 }
 
 // Etkinliğe katıl
@@ -599,6 +620,27 @@ async function joinEvent(eventId) {
     } catch (error) {
         console.error('Etkinlik katılım hatası:', error);
         showNotification('Etkinliğe katılırken bir hata oluştu.', 'error');
+    }
+}
+
+// Etkinlikten ayrıl
+async function leaveEvent(eventId) {
+    if (!window.apiService) {
+        showNotification('API servisi yüklenemedi.', 'error');
+        return;
+    }
+
+    try {
+        const result = await window.apiService.leaveEvent(eventId);
+        
+        if (result.success) {
+            showNotification('Etkinliğinizden ayrıldınız!', 'success');
+        } else {
+            showNotification(result.error || 'Etkinliğinizden ayrılırken bir hata oluştu.', 'error');
+        }
+    } catch (error) {
+        console.error('Etkinlik ayrılma hatası:', error);
+        showNotification('Etkinliğinizden ayrılırken bir hata oluştu.', 'error');
     }
 }
 
@@ -635,6 +677,7 @@ window.BosphorusFellas = {
     loadLandingPageEvents,
     handleEventParticipation,
     joinEvent,
+    leaveEvent,
     getCurrentUser: () => window.currentUser,
     getUsers: () => users,
     getApplications: () => applications,
