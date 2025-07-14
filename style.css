@@ -1394,6 +1394,11 @@ html[data-theme="dark"] body {
         grid-template-columns: 1fr;
         text-align: center;
     }
+
+    .scroll-indicator,
+    .scroll-arrow {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {
