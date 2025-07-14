@@ -18,7 +18,7 @@
 
 ### Base URL
 ```
-https://w101-production-e26e.up.railway.app
+https://bosphorusfellasapi-production.up.railway.app
 ```
 
 ### Content-Type
@@ -913,7 +913,7 @@ const addEventWithPhoto = async (eventData, photoFile) => {
 ## 📱 Swagger UI
 Canlı API dokümantasyonu ve test için:
 ```
-https://w101-production-e26e.up.railway.app/swagger/index.html
+https://bosphorusfellasapi-production.up.railway.app/swagger/index.html
 ```
 
 ---

@@ -45,7 +45,7 @@ Bosphorus Fellas, otomobil tutkunlarını bir araya getiren premium bir topluluk
 - **Google Fonts**: Poppins & Playfair Display
 
 ### Backend API
-- **Base URL**: `https://w101-production-e26e.up.railway.app`
+- **Base URL**: `https://bosphorusfellasapi-production.up.railway.app`
 - **Authentication**: JWT Bearer Token
 - **File Upload**: Multipart form data
 - **Response Format**: JSON
@@ -97,7 +97,7 @@ http://localhost:8000
 ## 🔧 API Entegrasyonu
 
 ### Backend API Bilgileri
-- **Base URL**: `https://w101-production-e26e.up.railway.app`
+- **Base URL**: `https://bosphorusfellasapi-production.up.railway.app`
 - **API Dokümantasyonu**: `for-frontend.txt` dosyasında detaylı bilgi
 
 ### Temel Endpoint'ler

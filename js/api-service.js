@@ -1,7 +1,7 @@
 // Backend API Service - Bosphorus Fellas
 class ApiService {
     constructor() {
-        this.baseURL = 'https://w101-production-e26e.up.railway.app';
+        this.baseURL = 'https://bosphorusfellasapi-production.up.railway.app';
     }
 
     // Set authorization token
