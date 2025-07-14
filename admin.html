@@ -476,7 +476,7 @@
 
         // Theme Management for Admin Panel
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             
@@ -487,7 +487,7 @@
             // Theme toggle event
             if (themeToggle) {
                 themeToggle.addEventListener('click', () => {
-                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
                     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                     
                     document.documentElement.setAttribute('data-theme', newTheme);

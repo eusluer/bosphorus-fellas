@@ -54,7 +54,7 @@ let opportunities = JSON.parse(localStorage.getItem('bf_opportunities')) || [
 
 // Theme Management
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     
@@ -74,7 +74,7 @@ function initTheme() {
         const newThemeIcon = document.getElementById('themeIcon');
         
         newThemeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
             console.log('Theme toggle clicked, switching from', currentTheme, 'to', newTheme);
@@ -106,7 +106,7 @@ const BosphorusFellas = {
     // Theme Management
     initTheme: initTheme,
     toggleTheme: function() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         document.documentElement.setAttribute('data-theme', newTheme);

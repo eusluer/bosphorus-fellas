@@ -1827,15 +1827,15 @@
                         window.BosphorusFellas.themeToggle();
                     } else {
                         // Fallback: manual theme toggle
-                        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-                        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                         document.documentElement.setAttribute('data-theme', newTheme);
                         localStorage.setItem('theme', newTheme);
                         
                         // Update icon
                         const themeIcon = document.getElementById('themeIcon');
                         if (themeIcon) {
-                            themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+                            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                         }
                     }
                 });
