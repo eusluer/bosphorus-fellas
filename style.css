@@ -1399,6 +1399,28 @@ html[data-theme="dark"] body {
     .scroll-arrow {
         display: none !important;
     }
+
+    .mobile-nav-buttons {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1.2rem;
+    }
+    .mobile-nav-buttons .btn-login,
+    .mobile-nav-buttons .btn-join {
+        width: 100%;
+        display: block;
+        text-align: center;
+        font-size: 1rem;
+        padding: 0.9rem 0;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+}
+@media (min-width: 769px) {
+    .mobile-nav-buttons {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {
