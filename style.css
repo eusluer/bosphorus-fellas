@@ -4201,43 +4201,37 @@ table tr:hover {
 
 @media (max-width: 768px) {
     .car-showcase {
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 1.2rem;
-        padding-bottom: 0.5rem;
+        display: block;
+        overflow-x: unset;
+        gap: 0;
+        padding-bottom: 0;
         margin-bottom: 1.5rem;
-        scrollbar-width: none;
-    }
-    .car-showcase::-webkit-scrollbar {
-        display: none;
     }
     .car-card {
-        min-width: 220px;
-        max-width: 80vw;
-        flex: 0 0 auto;
-        background: var(--card-bg);
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin-bottom: 1.2rem;
         border-radius: 18px;
         box-shadow: 0 4px 16px rgba(102,126,234,0.10);
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        justify-content: center;
-        padding: 2rem 1.2rem 1.5rem 1.2rem;
-        text-align: center;
-        gap: 1rem;
-        margin-bottom: 0;
+        justify-content: flex-start;
+        padding: 1.2rem 1rem;
+        text-align: left;
+        gap: 1.2rem;
     }
     .car-image {
         font-size: 2.2rem;
         min-width: 56px;
         min-height: 56px;
         background: var(--bg-primary);
-        border-radius: 50%;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0;
         box-shadow: 0 2px 8px rgba(102,126,234,0.08);
     }
     .car-info h3 {
