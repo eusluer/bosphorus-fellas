@@ -236,6 +236,19 @@ html[data-theme="dark"] body {
     height: 3px;
     background: var(--text-primary);
     transition: var(--transition);
+    transform-origin: center;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* Hero Section */
@@ -1271,6 +1284,43 @@ html[data-theme="dark"] body {
 
     .nav-menu {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-top: none;
+        border-radius: 0 0 15px 15px;
+        box-shadow: var(--shadow-lg);
+        z-index: 1000;
+        padding: 1rem;
+    }
+    
+    .nav-menu.active {
+        display: block;
+    }
+    
+    .nav-menu li {
+        margin: 0;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-menu .nav-link {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+    }
+    
+    .nav-menu .nav-link:hover {
+        background: var(--border-color);
     }
 
     .nav-buttons .btn-login,

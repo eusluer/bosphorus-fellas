@@ -225,13 +225,7 @@
                         </label>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="newsletter" name="newsletter">
-                            <span class="checkmark"></span>
-                            E-mail bülteni ve etkinlik bildirimlerini almak istiyorum
-                        </label>
-                    </div>
+
                 </div>
                 
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
@@ -355,7 +349,7 @@
                     acilDurumTelefon: applicationData.emergencyContactPhone,
                     sartlar: true,
                     kisiselVeri: true,
-                    emailBildirim: applicationData.newsletter || false,
+                    emailBildirim: false,
                     fotograf: photoUrl
                 };
                 // Başvuru gönderimini düzelt
