@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üyelik Başvurusu - Bosphorus Fellas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="auth-page">
+        <!-- Theme Toggle -->
+        <div class="auth-theme-toggle">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+        
+        <div class="auth-container" style="max-width: 700px;">
+            <div class="auth-header">
+                <div class="logo">
+                    <img src="img/logo.png" alt="Bosphorus Fellas Logo">
+                </div>
+                <h1>Üyelik Başvurusu</h1>
+                <p>Topluluğumuza katılmak için detaylı başvuru yapın</p>
+            </div>
+            
+            <form id="applyForm" class="auth-form">
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Kişisel Bilgiler</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName"><i class="fas fa-user"></i> Ad *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName"><i class="fas fa-user"></i> Soyad *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> E-mail Adresi *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhoto"><i class="fas fa-camera"></i> Profil Fotoğrafı *</label>
+                        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Telefon Numarası *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+90 555 123 45 67">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birthDate"><i class="fas fa-calendar-alt"></i> Doğum Tarihi *</label>
+                            <input type="date" id="birthDate" name="birthDate" required max="2006-01-01">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city"><i class="fas fa-map-marker-alt"></i> Şehir *</label>
+                            <select id="city" name="city" required>
+                                <option value="">Seçiniz</option>
+                                <option value="İstanbul">İstanbul</option>
+                                <option value="Ankara">Ankara</option>
+                                <option value="İzmir">İzmir</option>
+                                <option value="Bursa">Bursa</option>
+                                <option value="Antalya">Antalya</option>
+                                <option value="Adana">Adana</option>
+                                <option value="Konya">Konya</option>
+                                <option value="Gaziantep">Gaziantep</option>
+                                <option value="Kayseri">Kayseri</option>
+                                <option value="Eskişehir">Eskişehir</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="instagramHandle"><i class="fab fa-instagram"></i> Instagram Kullanıcı Adı</label>
+                            <input type="text" id="instagramHandle" name="instagramHandle" placeholder="@kullanici_adi">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address"><i class="fas fa-home"></i> Adres</label>
+                        <textarea id="address" name="address" rows="2" placeholder="Tam adresinizi yazın (isteğe bağlı)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Vehicle Information Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-car"></i> Araç Bilgileri</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carBrand"><i class="fas fa-car"></i> Araç Markası *</label>
+                            <select id="carBrand" name="carBrand" required>
+                                <option value="">Seçiniz</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Renault">Renault</option>
+                                <option value="Peugeot">Peugeot</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Kia">Kia</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Opel">Opel</option>
+                                <option value="Fiat">Fiat</option>
+                                <option value="Skoda">Skoda</option>
+                                <option value="Seat">Seat</option>
+                                <option value="Volvo">Volvo</option>
+                                <option value="Porsche">Porsche</option>
+                                <option value="Ferrari">Ferrari</option>
+                                <option value="Lamborghini">Lamborghini</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="carModel"><i class="fas fa-car-side"></i> Araç Modeli *</label>
+                            <input type="text" id="carModel" name="carModel" required placeholder="ör: 320i, C200, A4">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carYear"><i class="fas fa-calendar"></i> Araç Model Yılı *</label>
+                            <input type="number" id="carYear" name="carYear" required min="1990" max="2025">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="licensePlate"><i class="fas fa-id-card"></i> Plaka Numarası</label>
+                            <input type="text" id="licensePlate" name="licensePlate" placeholder="34 ABC 123" style="text-transform: uppercase;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience & Interests Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-road"></i> Deneyim & İlgi Alanları</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="drivingExperience"><i class="fas fa-road"></i> Sürüş Deneyimi (Yıl) *</label>
+                            <input type="number" id="drivingExperience" name="drivingExperience" required min="1" max="60">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="previousClubExperience"><i class="fas fa-users"></i> Önceki Topluluk Deneyimi</label>
+                            <input type="text" id="previousClubExperience" name="previousClubExperience" placeholder="Daha önce katıldığınız topluluklar">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interests"><i class="fas fa-heart"></i> İlgi Alanlarınız * (En az bir seçenek işaretleyin)</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="interests" value="track_day"> <i class="fas fa-flag-checkered"></i> Pist Günleri</label>
+                            <label><input type="checkbox" name="interests" value="meet"> <i class="fas fa-users"></i> Araç Buluşmaları</label>
+                            <label><input type="checkbox" name="interests" value="technical"> <i class="fas fa-cogs"></i> Teknik Bilgi Paylaşımı</label>
+                            <label><input type="checkbox" name="interests" value="social"> <i class="fas fa-glass-cheers"></i> Sosyal Etkinlikler</label>
+                            <label><input type="checkbox" name="interests" value="maintenance"> <i class="fas fa-wrench"></i> Bakım ve Onarım</label>
+                            <label><input type="checkbox" name="interests" value="tuning"> <i class="fas fa-tachometer-alt"></i> Modifikasyon</label>
+                            <label><input type="checkbox" name="interests" value="charity"> <i class="fas fa-heart"></i> Yardım Etkinlikleri</label>
+                            <label><input type="checkbox" name="interests" value="photography"> <i class="fas fa-camera"></i> Araç Fotoğrafçılığı</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="whyJoin"><i class="fas fa-comment"></i> Neden topluluğumuza katılmak istiyorsunuz? *</label>
+                        <textarea id="whyJoin" name="whyJoin" rows="4" required placeholder="Bize kendinizden ve neden Bosphorus Fellas topluluğuna katılmak istediğinizden bahsedin..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-phone-square"></i> Acil Durum İletişim</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyContactName"><i class="fas fa-user-friends"></i> Acil Durum İletişim Kişisi Adı *</label>
+                            <input type="text" id="emergencyContactName" name="emergencyContactName" required placeholder="Ad Soyad">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emergencyContactPhone"><i class="fas fa-phone"></i> Acil Durum İletişim Telefonu *</label>
+                            <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required placeholder="+90 555 123 45 67">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Privacy Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-contract"></i> Sözleşme & Gizlilik</h3>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            <a href="#" onclick="showTerms()">Üyelik şartları ve topluluk kurallarını</a> okudum ve kabul ediyorum *
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <span class="checkmark"></span>
+                            <a href="#" onclick="showPrivacy()">Kişisel verilerin korunması ve işlenmesi</a> politikasını okudum ve kabul ediyorum *
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <span class="checkmark"></span>
+                            E-mail bülteni ve etkinlik bildirimlerini almak istiyorum
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
+                    <i class="fas fa-paper-plane"></i>
+                    Başvuruyu Gönder
+                </button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Zaten üye misiniz? <a href="login.html">Giriş yapın</a></p>
+                <p><a href="index.html">Ana sayfaya dön</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Services -->
+    <script src="js/api-service.js"></script>
+    <script src="js/auth-service.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+    <script>
+        // Application form handler
+        document.getElementById('applyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const applicationData = {};
+                
+                // Fotoğraf kontrolü
+                const photoFile = formData.get('profilePhoto');
+                if (!photoFile || !photoFile.name) {
+                    window.showAuthMessage('Lütfen profil fotoğrafı yükleyin', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+                    return;
+                }
+                // Fotoğrafı API'ye yükle
+                let photoUrl = '';
+                try {
+                    const uploadResult = await window.apiService.uploadFile(photoFile, 'profil_fotolari');
+                    if (uploadResult.success && uploadResult.data && uploadResult.data.url) {
+                        photoUrl = uploadResult.data.url;
+                    } else {
+                        throw new Error(uploadResult.error || 'Fotoğraf yüklenemedi');
+                    }
+                } catch (err) {
+                    window.showAuthMessage('Fotoğraf yüklenemedi: ' + err.message, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+                    return;
+                }
+                // Diğer alanları topla
+                for (let [key, value] of formData.entries()) {
+                    if (key !== 'interests' && key !== 'profilePhoto') {
+                        applicationData[key] = value;
+                    }
+                }
+                
+                // Handle interests (checkboxes)
+                const interests = [];
+                const interestCheckboxes = document.querySelectorAll('input[name="interests"]:checked');
+                interestCheckboxes.forEach(checkbox => {
+                    interests.push(checkbox.value);
+                });
+                
+                // Validate required fields
+                if (interests.length === 0) {
+                    window.showAuthMessage('Lütfen en az bir ilgi alanı seçin', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+                    return;
+                }
+                
+                if (!applicationData.terms) {
+                    window.showAuthMessage('Lütfen üyelik şartlarını kabul edin', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+                    return;
+                }
+                
+                if (!applicationData.privacy) {
+                    window.showAuthMessage('Lütfen gizlilik politikasını kabul edin', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+                    return;
+                }
+                
+                // Clean Instagram handle
+                let instagramHandle = applicationData.instagramHandle || '';
+                if (instagramHandle && !instagramHandle.startsWith('@')) {
+                    instagramHandle = '@' + instagramHandle;
+                }
+                
+                // API'ye uygun veri hazırla
+                const apiData = {
+                    ad: applicationData.firstName,
+                    soyad: applicationData.lastName,
+                    email: applicationData.email,
+                    telefon: applicationData.phone,
+                    dogumTarihi: applicationData.birthDate,
+                    sehir: applicationData.city,
+                    adres: applicationData.address || '',
+                    aracMarka: applicationData.carBrand,
+                    aracModel: applicationData.carModel,
+                    aracYili: applicationData.carYear,
+                    plaka: applicationData.licensePlate || '',
+                    instagram: instagramHandle || '',
+                    neden: applicationData.whyJoin,
+                    deneyim: parseInt(applicationData.drivingExperience),
+                    ilgiAlanlari: interests.join(', '),
+                    acilDurumKisi: applicationData.emergencyContactName,
+                    acilDurumTelefon: applicationData.emergencyContactPhone,
+                    sartlar: true,
+                    kisiselVeri: true,
+                    emailBildirim: applicationData.newsletter || false,
+                    fotograf: photoUrl
+                };
+                // Başvuru gönderimini düzelt
+                const result = await window.apiService.post('/api/uyelik-basvurusu', apiData);
+                
+                if (result.success) {
+                    window.showAuthMessage('Başvurunuz başarıyla gönderildi! Admin onayı için beklemeye alındı. Size e-mail ile bilgi vereceğiz.', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } else {
+                    window.showAuthMessage(`Başvuru hatası: ${result.error}`, 'error');
+                }
+                
+            } catch (error) {
+                window.showAuthMessage('Başvuru gönderilirken bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+                console.error('Application error:', error);
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Başvuruyu Gönder';
+            }
+        });
+        
+        function showTerms() {
+            alert(`BOSPHORUS FELLAS ÜYELİK ŞARTLARI VE TOPLULUK KURALLARI
+
+📋 GENEL KURALLAR:
+1. Üyeler topluluk etkinliklerine saygılı ve sorumlu davranır
+2. Trafik kurallarına kesin uyum zorunludur
+3. Güvenli sürüş her zaman önceliktir
+4. Topluluk değerlerine ve diğer üyelere saygı gösterilir
+5. Etkinliklerde alkol ve madde kullanımı yasaktır
+
+🚗 ETKİNLİK KURALLARI:
+6. Etkinlik katılım koşullarına tam uyum sağlanır
+7. Pist günlerinde güvenlik ekipmanları zorunludur
+8. Araç güvenlik standartlarına uygunluk gereklidir
+9. Organizasyon talimatlarına uyulur
+10. Geç katılım ve erken ayrılış önceden bildirilir
+
+🤝 TOPLULUK ETİĞİ:
+11. Diğer üyelere karşı saygılı ve destekleyici olunur
+12. Topluluk itibarını koruma sorumluluğu taşınır
+13. Sosyal medyada topluluk adına paylaşımlarda dikkatli olunur
+14. Rekabet ruhu sporcu ahlakı çerçevesinde yaşanır
+15. Yeni üyelere rehberlik edilir
+
+⚠️ YASAKLAR VE YAPTIRILAR:
+16. Kural ihlalleri değerlendirme sürecine tabidir
+17. Tekrarlı ihlaller üyelik iptali ile sonuçlanabilir
+18. Güvenlik ihlalleri tolerans gösterilmez
+19. Topluluk içi çatışma yaratıcı davranışlar kabul edilmez
+
+Detaylı bilgi için: info@bosphorusfellas.com`);
+        }
+        
+        function showPrivacy() {
+            alert(`KİŞİSEL VERİLERİN KORUNMASI VE İŞLENMESİ POLİTİKASI
+
+🔒 VERİ TOPLAMA VE KULLANIM:
+• Kişisel bilgileriniz sadece üyelik süreçleri için kullanılır
+• Araç bilgileri etkinlik organizasyonu için gereklidir
+• İletişim bilgileri acil durumlar ve bilgilendirme için kullanılır
+• Fotoğraf/video çekimlerinde izniniz alınır
+
+📧 İLETİŞİM VE PAZARLAMA:
+• E-mail bildirimleri onayınız dahilinde gönderilir
+• İstediğiniz zaman abonelikten çıkabilirsiniz
+• Üçüncü taraflarla bilgi paylaşımı yapılmaz
+• Ticari amaçlı kullanım onayınız alınır
+
+🛡️ VERİ GÜVENLİĞİ:
+• Verileriniz güvenli sistemlerde saklanır
+• Yetkisiz erişime karşı korunur
+• Düzenli güvenlik güncellemeleri yapılır
+• KVKK kapsamında haklarınız korunur
+
+📋 HAKLARINIZ:
+• Verilerinize erişim talep edebilirsiniz
+• Düzeltme ve silme hakkınız vardır
+• İşleme itiraz edebilirsiniz
+• Şikayet hakkınız mevcuttur
+
+İletişim: privacy@bosphorusfellas.com`);
+        }
+        
+        // Auto-format license plate
+        document.getElementById('licensePlate').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^0-9A-Z]/g, '');
+            
+            if (value.length <= 2) {
+                e.target.value = value;
+            } else if (value.length <= 5) {
+                e.target.value = value.slice(0, 2) + ' ' + value.slice(2);
+            } else {
+                e.target.value = value.slice(0, 2) + ' ' + value.slice(2, 5) + ' ' + value.slice(5, 8);
+            }
+        });
+        
+        // Auto-format phone numbers
+        function formatPhone(input) {
+            input.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.startsWith('90')) {
+                    value = value.slice(2);
+                }
+                
+                if (value.length <= 3) {
+                    e.target.value = '+90 ' + value;
+                } else if (value.length <= 6) {
+                    e.target.value = '+90 ' + value.slice(0, 3) + ' ' + value.slice(3);
+                } else if (value.length <= 8) {
+                    e.target.value = '+90 ' + value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6);
+                } else {
+                    e.target.value = '+90 ' + value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6, 8) + ' ' + value.slice(8, 10);
+                }
+            });
+        }
+        
+        formatPhone(document.getElementById('phone'));
+        formatPhone(document.getElementById('emergencyContactPhone'));
+        
+        // Auto-format Instagram handle
+        document.getElementById('instagramHandle').addEventListener('input', function(e) {
+            if (e.target.value && !e.target.value.startsWith('@')) {
+                e.target.value = '@' + e.target.value.replace(/[^a-zA-Z0-9._]/g, '');
+            }
+        });
+    </script>
+    
+    <style>
+        .form-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .form-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            margin-bottom: 0;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .checkbox-group label:hover {
+            background-color: var(--border-color);
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.75rem;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+            padding: 0.5rem 0;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.75rem;
+        }
+        
+        .checkmark {
+            margin-right: 0.5rem;
+        }
+        
+        .auth-container {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .auth-form {
+            max-height: none;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section {
+                padding: 1.5rem;
+            }
+            
+            .auth-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+        }
+        
+        /* Enhanced form styling */
+        .form-group input[type="date"] {
+            color-scheme: dark;
+        }
+        
+        .form-group select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            appearance: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</body>
+</html> 

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - Bosphorus Fellas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="auth-page">
+        <!-- Theme Toggle -->
+        <div class="auth-theme-toggle">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+        
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo">
+                    <img src="img/logo.png" alt="Bosphorus Fellas Logo">
+                </div>
+                <h1>Hoşgeldiniz</h1>
+                <p>Topluluk hesabınıza giriş yapın</p>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">E-mail Adresi</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Henüz üye değil misiniz? <a href="apply.html">Başvuru yapın</a></p>
+                <p><a href="index.html">Ana sayfaya dön</a></p>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <!-- API Services -->
+    <script src="js/api-service.js"></script>
+    <script src="js/auth-service.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+    <script>
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Giriş yapılıyor...';
+            
+            try {
+                const result = await window.authService.signIn(email, password);
+                
+                if (result.success) {
+                    window.showAuthMessage(result.message, 'success');
+                    
+                    // Token kontrolü
+                    const token = localStorage.getItem('bf_token');
+                    console.log('Token after login:', token ? 'exists' : 'not found');
+                    console.log('All localStorage keys:', Object.keys(localStorage));
+                    
+                    // Check if user is admin
+                    const isAdmin = await window.authService.isAdmin();
+                    console.log('Login successful, isAdmin:', isAdmin);
+                    
+                    // Direkt yönlendirme yap (setTimeout kaldırıldı)
+                    console.log('Redirecting to dashboard...');
+                    if (isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    window.showAuthMessage(result.error, 'error');
+                }
+            } catch (error) {
+                window.showAuthMessage('Beklenmeyen bir hata oluştu.', 'error');
+                console.error('Login error:', error);
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Giriş Yap';
+            }
+        });
+        
+        // Check if user is already logged in
+        window.addEventListener('load', async () => {
+            try {
+                const isAuth = await window.authService.isAuthenticated();
+                console.log('Page load - isAuthenticated:', isAuth);
+                
+                if (isAuth) {
+                    const isAdmin = await window.authService.isAdmin();
+                    console.log('Page load - isAdmin:', isAdmin);
+                    
+                    if (isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                }
+            } catch (error) {
+                console.error('Page load auth check error:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

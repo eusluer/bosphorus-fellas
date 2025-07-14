@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bosphorus Fellas - Premium Car Community</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="img/logo.png" alt="Bosphorus Fellas">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="#about" class="nav-link">Hakkımızda</a></li>
+                <li><a href="#services" class="nav-link">Üyelik Sistemi</a></li>
+                <li><a href="#events" class="nav-link">Etkinlikler</a></li>
+                <li><a href="#contact" class="nav-link">İletişim</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <a href="login.html" class="btn-login">Giriş</a>
+                <a href="apply.html" class="btn-join">Üye Ol</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line-1">BOSPHORUS FELLAS</span>
+                    <span class="title-line-2">EKİBİNİN BİR</span>
+                    <span class="title-line-3">PARÇASI OL</span>
+                </h1>
+                <p class="hero-description">
+                    Yolda yalnız olmak geçmişte kaldı. Eğer sen de tutkunu paylaşacak bir ekip arıyorsan, doğru yerdesin. Başvurunu yap, hikâyemizin bir parçası ol!
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Aktif Üye</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Adrenalin Dolu Etkinlik</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Fırsatlar</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="apply.html" class="btn-primary">
+                        <span>Ailemizde Yer Alın</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#about" class="btn-secondary">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Hikâyemizi Keşfedin</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="car-showcase">
+                    <div class="car-card active">
+                        <div class="car-image">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="car-info">
+                            <h3>Etkinlikler</h3>
+                            <p>Adrenalin Dolu Maceralar</p>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="car-info">
+                            <h3>Fırsatlar</h3>
+                            <p>Özel Üye Avantajları</p>
+                        </div>
+                    </div>
+                    <div class="car-card">
+                        <div class="car-image">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="car-info">
+                            <h3>Dostluk</h3>
+                            <p>Sıcak Topluluk Ruhu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-elements">
+                    <div class="float-item item-1">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="float-item item-2">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="float-item item-3">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Hakkımızda</span>
+                <h2 class="section-title">Bosphorus Fellas Kimdir?</h2>
+                <p class="section-description">
+                    Bosphorus Fellas, araç tutkunlarını bir araya getiren, güçlü bir topluluk ve deneyim paylaşım platformudur. Sürüş sevgisi, teknik bilgi ve dostane bir atmosferde üyelerimizin her anını daha anlamlı kılmak için çalışıyoruz.
+                </p>
+            </div>
+            <div class="about-content">
+                <div class="about-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Vizyonumuz</h3>
+                        <p>Bosphorus Fellas, araç tutkunlarının bir araya gelip sürüş heyecanını paylaşabileceği, bilgi alışverişinin ve dostluğun ön planda olduğu bir topluluk oluşturmayı hedeflemektedir.</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Her bireyin kendini değerli hissedeceği ortam</li>
+                            <li><i class="fas fa-check"></i> Güven dolu bir platform</li>
+                            <li><i class="fas fa-check"></i> Birlikte yol almanın keyfini çıkarma</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Misyonumuz</h3>
+                        <p>Bosphorus Fellas olarak, üyelerimize sürdürülebilir bir topluluk deneyimi sunmak; sürüş tutkusunu, teknik bilgiyi ve dostane ilişkileri bir arada yaşatmak için çalışıyoruz.</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Her etkinlikte güvenlik ve eğlence</li>
+                            <li><i class="fas fa-check"></i> Unutulmaz anlar ve değerli bağlar</li>
+                            <li><i class="fas fa-check"></i> Sürdürülebilir topluluk deneyimi</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Farkımız Her Yerde Geçerli</h3>
+                        <p>Topluluğumuzun üyeleri, Bosphorus Fellas'a özel servislerde indirimli hizmetlerden faydalanır. Anlaşmalı lastikçiler, bakım noktaları ve performans atölyelerinde özel ayrıcalıklar sizi bekliyor.</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Anlaşmalı servis indirimleri</li>
+                            <li><i class="fas fa-check"></i> Performans atölyesi ayrıcalıkları</li>
+                            <li><i class="fas fa-check"></i> Sadece yolda değil, garajda da fark</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership System Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Grup Sistemizin İşleyişi</span>
+                <h2 class="section-title">Bu Ailede Yer Almak İçin</h2>
+                <p class="section-description">
+                    Bu ailede yer almak için daha fazla beklemeyin ve bu sürece hemen katılarak bu ailenin tadını çıkartın!
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Yeni Katılımcılar</h3>
+                    <p>Grubumuza koşulsuz ve şartsız olarak katılabilen tüm otomobil tutkunlarıdır. Ayda bir kez düzenlenen etkinliklerle topluluğa adapte olmaları sağlanır.</p>
+                    <div class="membership-note">
+                        <small>Sürüş becerileri ve grup uyumu değerlendirildikten sonra Üyeler statüsüne geçebilirler.</small>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Bosphorus Fellas</h3>
+                    <p>Topluluğun dinamiklerine uyum sağlayan, sürüş kabiliyeti ve iletişimiyle öne çıkan üyelerden oluşur. Özel etkinliklere sınırsız erişim hakkı kazanır.</p>
+                    <div class="membership-note">
+                        <small>Bosphorus Fellas'ın ruhunu temsil eden çekirdek ekip arasında yer alırlar.</small>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Organizasyon Ekibi</h3>
+                    <p>Topluluğumuzun ortak mottosunu sahiplenip, bu doğrultuda fikir üretir ve Bosphorus Fellas'ın ruhunu yansıtan projelerde aktif rol alırlar.</p>
+                    <div class="membership-note">
+                        <small>Yol gösterici olurlar; yeni üyelerin yön bulmasında, grubun vizyonunun korunmasında temel taş rolündedirler.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="events">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Etkinlikler</span>
+                <h2 class="section-title">Heyecan Verici Etkinliklerimize Katılın!</h2>
+                <p class="section-description">
+                    Tutkulu araba severler için düzenli olarak etkinlikler düzenliyoruz. Acele edin, yerinizi alın! Bizi takip edin ve kaçırmayın. Katılımcılar, adrenalin dolu etkinliklerde bir araya gelecek ve farklı alanlardaki deneyimlerini paylaşacaklar.
+                </p>
+            </div>
+            <div class="events-slider" id="eventsContainer">
+                <!-- Etkinlikler buraya dinamik olarak yüklenecek -->
+                <div class="loading-events">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Etkinlikler yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Üyelerimiz</span>
+                <h2 class="section-title">Ne Diyorlar?</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Bosphorus Fellas'a katıldığımdan beri otomobil tutkumun yanı sıra muhteşem insanlarla tanıştım. Gerçekten özel bir topluluk."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Mehmet Özkan</h4>
+                            <span>Porsche 911 Sahibi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Etkinlikler mükemmel organize ediliyor. Track day'ler sayesinde sürüş becerilerimi geliştirdim ve harika arkadaşlıklar kurdum."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Ayşe Demir</h4>
+                            <span>BMW M3 Sahibi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"İş dünyasında kurduğum bağlantılar sayesinde kariyerimde büyük ilerlemeler kaydettim. Bu topluluğun gücünü hissediyorum."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Can Yılmaz</h4>
+                            <span>Ferrari 488 Sahibi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ailemizde Yer Alın ve Eğlenceye Katılın</h2>
+                <p>Her geçen gün büyüyen ailemizde, birlikte yol almanın keyfini çıkarıyoruz. Siz de bu heyecanın bir parçası olun!</p>
+                <div class="cta-buttons">
+                    <a href="apply.html" class="btn-primary">
+                        <span>Ailemize Katıl</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#services" class="btn-outline">
+                        <span>Ayrıcalıklar Dünyası</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="img/logo.png" alt="Bosphorus Fellas">
+                    </div>
+                    <p>Bosphorus Fellas, araç tutkunlarını bir araya getiren güçlü bir topluluk. Her geçen gün büyüyen ailemizde, birlikte yol almanın keyfini çıkarıyoruz.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Hızlı Bağlantılar</h3>
+                    <ul>
+                        <li><a href="#home">Ana Sayfa</a></li>
+                        <li><a href="#about">Hakkımızda</a></li>
+                        <li><a href="#services">Üyelik Sistemi</a></li>
+                        <li><a href="#events">Etkinlikler</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>İletişim</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@bosphorusfellas.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+90 555 123 45 67</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>İstanbul, Türkiye</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Bosphorus Fellas. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+        <!-- API Services -->
+    <script src="js/api-service.js"></script>
+    <script src="js/auth-service.js"></script>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html> 
