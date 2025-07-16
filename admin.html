@@ -1270,7 +1270,7 @@
                 const pdfFile = document.getElementById('eventPDF').files[0];
                 let pdfUrl = '';
                 if (pdfFile) {
-                  const uploadResult = await window.apiService.uploadFile(pdfFile, 'etkinlik_pdf');
+                  const uploadResult = await window.apiService.uploadFile(pdfFile, 'etkinlikpdf');
                   if (uploadResult.success) {
                         pdfUrl = uploadResult.data.url;
                    } else {
