@@ -1266,7 +1266,23 @@
                     photoUrl = '';
                 }
                 eventData.fotograf = photoUrl;
-                
+               
+                const pdfFile = document.getElementById('eventPDF').files[0];
+                let pdfUrl = '';
+                if (pdfFile) {
+                  const uploadResult = await window.apiService.uploadFile(pdfFile, 'etkinlik_pdf');
+                  if (uploadResult.success) {
+                        pdfUrl = uploadResult.data.url;
+                   } else {
+                       showMessage('PDF yüklenemedi', 'error');
+                       showLoading(false);
+                       return;
+                   }
+                } else {
+                   pdfUrl = '';
+               }
+               eventData.pdf_url = pdfUrl;
+               
                 const result = await window.apiService.createEvent(eventData);
                 
                 if (result.success) {
